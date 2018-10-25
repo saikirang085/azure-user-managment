@@ -1,0 +1,18 @@
+<div class="landing-container">
+    
+    <div class="content" 
+         fxLayout="row" 
+         fxLayout.xs="column" 
+         fxFlexFill >
+         
+        <button fxFlex="45" mat-raised-button color="primary" type="submit" class="admin-btn" (click)="login()">
+          <mat-icon>perm_identity</mat-icon>
+          <p>Admin</p>
+        </button>
+        <button fxFlex="45" mat-raised-button color="accent" class=user-btn [routerLink]="['/login']">
+          <mat-icon>people_outline</mat-icon>
+          <p>Users</p>
+        </button>
+    </div>
+    
+  </div>

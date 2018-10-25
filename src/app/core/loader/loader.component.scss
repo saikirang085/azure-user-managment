@@ -1,0 +1,30 @@
+.loader-container {
+    &.loader-hidden {
+      visibility: hidden;
+    }
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 10000;
+    .loader-backdrop {
+      height: 100%;
+      z-index: 1000;
+      width: 100%;
+      position: absolute;
+      background: #000000;
+      opacity: 0.2;
+    }
+    .loader-overlay {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      opacity: 1;
+      z-index: 500000;
+      .loader-indicator {
+        z-index: 10000000;
+        color: #d2d2d2;
+        font-size: 70px;
+      }
+    }
+  }
+  
