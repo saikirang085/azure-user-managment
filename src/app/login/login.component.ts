@@ -4,6 +4,7 @@ import { ValidationService } from '../shared/_services/validation.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { LoaderService } from '../shared/_services/loader.service';
+import { UtilService } from '../shared/_services/util.service';
 
 @Component({
   selector: 'app-login',
@@ -13,31 +14,41 @@ import { LoaderService } from '../shared/_services/loader.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMsg: any;
+  isAdmin: boolean;
 
   constructor(
     private router: Router,
     private authService: AuthService,
+    private utilService: UtilService,
     private loaderService: LoaderService,
     private validationService: ValidationService
   ) { }
 
 
   getErrorMessage(control) {
-    return this.loginForm.controls[control].hasError('required') ? `${control} required` :
-    this.loginForm.controls[control].hasError('pattern') ? `Please enter a valid ${control}` : '';
+    return this.loginForm.controls[control].touched && this.loginForm.controls[control].hasError('required') ? `${control} required` :
+    this.loginForm.controls[control].touched && this.loginForm.controls[control].hasError('pattern') ? `Please enter a valid ${control}` : '';
   }
 
   login() {
     if(this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe((res: any) => {
+      this.loginForm.value.role = this.isAdmin ? 'admin' : 'user';
+      this.authService.login(this.utilService.encryptValue(this.loginForm.value, ['password'])).subscribe((res: any) => {
         if(res.error == 0) {
-          this.router.navigate(['/user/dashboard']);
+          if(this.isAdmin) {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/user/user-dashboard']);
+          }
+        } else {
+          this.errorMsg = res && res.message ? res.message : 'Error while login';  
         }
       }, err => {
         this.errorMsg = err && err.message ? err.message : 'Error while login';
       })
     }
   }
+
 
   initForm() {
     this.loginForm = new FormGroup({
@@ -47,6 +58,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    let urlSchema = location.pathname;
+    if(urlSchema && urlSchema.indexOf('/admin') > -1) {
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
     this.initForm();
   }
 

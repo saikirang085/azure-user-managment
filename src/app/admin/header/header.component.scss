@@ -1,5 +1,20 @@
+.brand-logo {
+    img {
+        height: 40px;
+    }
+}
+
 .example-icon {
     padding: 0 14px;
+}
+
+.mat-button {
+    height: 100%;
+    border-radius: 0;
+    padding: 14px 25px;
+    &.active {
+        background-color: #ff4081;
+    }
 }
   
 .example-spacer {

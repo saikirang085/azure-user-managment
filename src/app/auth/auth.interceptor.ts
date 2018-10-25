@@ -31,10 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
         if (event.url.indexOf('login') > -1 || event.url.indexOf('facebookLogin') > -1 || event.url.indexOf('loginAsUser') > -1) {
           loader.hide();
           if (event.body.error == 0) {
-            let token = event.body.responseObj.token;
-            delete event.body.responseObj.token;
-            let user = event.body.responseObj;
-            auth._setSession(token, user);
+            let user = event.body.data;
+            auth._setSession(user);
           }
         }
         // return event;

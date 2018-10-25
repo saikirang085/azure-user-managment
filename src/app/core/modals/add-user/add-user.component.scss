@@ -1,13 +1,4 @@
-.signupContainer {
-    background-color: #f0f0f0;
-    height: 120%;
-    padding: 30px;
-    mat-card {
-        // position: absolute;
-        // top: 50px;
-        // bottom: 0;
-        // left: 0;
-        // right: 0;
+.mat-dialog-content {
         margin: 0 auto;
         min-width: 300px;
         max-width: 400px;
@@ -60,5 +51,10 @@
                 color: #3f51b5;
             }
         }
+}
+
+.mat-dialog-actions {
+    .mat-button {
+        margin: 0 auto;
     }
 }

@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
-import { ValidationService } from '../shared/_services/validation.service';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { UtilService } from '../shared/_services/util.service';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { ValidationService } from 'src/app/shared/_services/validation.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UtilService } from 'src/app/shared/_services/util.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class AddUserComponent implements OnInit {
   signUpForm: FormGroup;
   errorMsg: any;
   errorUpload: boolean;
@@ -25,10 +26,15 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     private utilService: UtilService,
     private sanitizer: DomSanitizer,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    public dialogRef: MatDialogRef<AddUserComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
-
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  
   getErrorMessage(control) {
     return this.signUpForm.controls[control].touched && this.signUpForm.controls[control].hasError('required')  ? `${control} required` :
     this.signUpForm.controls[control].touched && this.signUpForm.controls[control].hasError('pattern') ? `Please enter a valid ${control}` : '';
@@ -94,27 +100,17 @@ export class SignupComponent implements OnInit {
     this[element].nativeElement.value = "";
   }
 
-  initForm() {
+  initForm(data?) {
     this.signUpForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.pattern(this.validationService.email_regexPattern)]),
-      role: new FormControl('user', [Validators.required, Validators.pattern(this.validationService.email_regexPattern)]),
-      password: new FormControl('', [Validators.required, Validators.pattern(this.validationService.password_regexPattern)]),
-      confirmPassword: new FormControl('', [Validators.required, Validators.pattern(this.validationService.password_regexPattern)]),
+      firstName: new FormControl(data ? data.firstName : '', [Validators.required]),
+      lastName: new FormControl(data ? data.lastName : '', [Validators.required]),
+      role: new FormControl(data ? data.role : '', [Validators.required]),
+      email: new FormControl({value: data ? data.email : '', disabled: data && data.email ? true : false}, [Validators.required, Validators.pattern(this.validationService.email_regexPattern)]),
     });
-    this.signUpForm.controls['confirmPassword'].valueChanges.subscribe(value => {
-      if(this.signUpForm.get('confirmPassword').value && this.signUpForm.get('password').value && this.signUpForm.get('confirmPassword').value == this.signUpForm.controls['password'].value) {
-        this.passwordMismatch = false;
-      } else {
-        this.passwordMismatch = true;
-      }
-    })
   }
 
   ngOnInit() {
     this.initForm();
   }
-
 
 }

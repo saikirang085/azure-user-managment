@@ -45,9 +45,18 @@ export class AuthService {
     .pipe(catchError(this.utilService.handleError)); 
   }
 
-  _setSession(accessToken, profile) {
+  resetPassword(data) {
+    return this.http.post(`reset-password`, data)
+    .pipe(catchError(this.utilService.handleError)); 
+  }
+
+  signup(data) {
+    return this.http.post(`signup`, data)
+    .pipe(catchError(this.utilService.handleError)); 
+  }
+
+  _setSession(profile) {
     // Save session data and update login status subject
-    localStorage.setItem('access_token', accessToken);
     // profile.brandId = 7257;
     localStorage.setItem('profile', JSON.stringify(profile));
     // this.setBrandId = profile.brandId;

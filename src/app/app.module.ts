@@ -17,12 +17,21 @@ import { SignupModule } from './signup/signup.module';
 import { AnonymousGuardService } from './shared/guards/anonymous.guard';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { UtilService } from './shared/_services/util.service';
+import { ResetPasswordModule } from './reset-password/reset-password.module';
+import { AdminModule } from './admin/admin.module';
+import { AddUserComponent } from './core/modals/add-user/add-user.component';
+import { ConfirmComponent } from './core/modals/confirm/confirm.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddUserComponent,
+    ConfirmComponent
+  ],
+  entryComponents: [
+    AddUserComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +42,8 @@ import { UtilService } from './shared/_services/util.service';
     ForgotPasswordModule,
     SignupModule,
     LandingModule,
+    ResetPasswordModule,
+    AdminModule,
     AppRoutingModule
   ],
   providers: [

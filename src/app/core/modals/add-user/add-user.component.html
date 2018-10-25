@@ -1,0 +1,69 @@
+<h1 mat-dialog-title>{{data.type == 'add' ? 'Add' : 'Modify'}} User</h1>
+<div mat-dialog-content>
+    <form [formGroup]="signUpForm" novalidate>
+        <div class="text-center">
+          <p class="profile-pic">
+            <img [src]="imageUrl ? imageUrl : '/assets/images/default-user1.png'">
+            <button mat-mini-fab color="accent">
+                <input type="file" id="File" class="d-none" #uploadLogoFile (change)="fileChanged($event,'signupForm', 'uploadLogoFile')">
+                <mat-icon matSuffix (click)="uploadLogoFile.click()">add</mat-icon>
+            </button>
+          </p>
+          <mat-error *ngIf="errorUpload">Please upload image only.</mat-error>
+        </div>
+        <p>
+          <mat-form-field appearance="legacy">
+            <mat-label>First Name*</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput placeholder="First Name" formControlName="firstName">
+            <mat-error *ngIf="signUpForm.get('firstName').touched && signUpForm.get('firstName').invalid">{{getErrorMessage('firstName')}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="legacy">
+            <mat-label>Last Name*</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput placeholder="Last Name" formControlName="lastName">
+            <mat-error *ngIf="signUpForm.get('lastName').touched && signUpForm.get('lastName').invalid">{{getErrorMessage('lastName')}}</mat-error>
+          </mat-form-field>
+        </p>
+        <!-- <p>
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" (focus)="picker.open()" (blur)="picker.close()" disabled>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+          </mat-form-field>
+        </p> -->
+        <p>
+          <mat-form-field appearance="legacy">
+            <mat-label>Email*</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput placeholder="Email" formControlName="email">
+            <mat-error *ngIf="signUpForm.get('email').touched && signUpForm.get('email').invalid">{{getErrorMessage('email')}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field>
+            <mat-label>Role*</mat-label>
+            <mat-select placeholder="Favorite food" formControlName="role">
+              <mat-option [value]="" selected disabled>
+                Select Role
+              </mat-option>
+              <mat-option [value]="admin">
+                Admin
+              </mat-option>
+              <mat-option [value]="user">
+                User
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="signUpForm.get('role').touched && signUpForm.get('role').invalid">{{getErrorMessage('role')}}</mat-error>
+          </mat-form-field>
+        </p>
+        <mat-grid-list cols="1">
+            <button mat-raised-button color="accent" (click)="signup()">Sign Up</button>
+        </mat-grid-list>
+    </form>
+</div>
+<div mat-dialog-actions class="text-center">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</div>

@@ -2,13 +2,48 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 // import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { throwError } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
-
+  environment = environment;
   constructor() { }
+
+  uploadFile(formData): any {
+    // this.loaderService.show();
+    // let url = `file/uploadFile`;
+    return Observable.create((observer) => {
+      let xhr: XMLHttpRequest = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            observer.next(xhr.response ? JSON.parse(xhr.response) : '');
+            observer.complete();
+          } else {
+            observer.error(xhr.response ? JSON.parse(xhr.response) : '');
+          }
+        }
+        return () => {
+          xhr.abort();
+        };
+      }
+      xhr.open("POST", `${environment.BASE_API}/uploadFile`, true)
+      xhr.send(formData)
+    });
+  }
+
+  encryptValue(obj, arr) {
+    let modifiedObj = obj;
+    if(arr && arr.length) {
+        arr.forEach(key => {
+          modifiedObj[key] = window.btoa(modifiedObj[key]);
+        });
+        return modifiedObj;
+    }
+  }
 
   public handleError(error: HttpErrorResponse) {
     if (error.status === 401) {

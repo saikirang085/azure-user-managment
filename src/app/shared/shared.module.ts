@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule, MatGridListModule, MatProgressSpinnerModule} from '@angular/material';
+import {MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatButtonModule, MatGridListModule, MatNativeDateModule, MatProgressSpinnerModule, MatDatepickerModule, MatToolbarModule, MatTabsModule, MatTableModule, MatDialogModule, MatSelectModule} from '@angular/material';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidationService } from './_services/validation.service';
@@ -20,6 +20,13 @@ import { LoaderService } from './_services/loader.service';
     MatGridListModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
     MatFormFieldModule
   ],
   exports: [
@@ -34,6 +41,13 @@ import { LoaderService } from './_services/loader.service';
     MatGridListModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatToolbarModule,
+    MatTabsModule,
+    MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
     MatFormFieldModule
   ],
   declarations: [],

@@ -1,11 +1,17 @@
-
-TS
-CSS
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Third Line</span>
+    <span class="brand-logo">
+      <img src="assets/images/feed-logo.png">
+    </span>
     <span class="example-spacer"></span>
-    <mat-icon class="example-icon">favorite</mat-icon>
-    <mat-icon class="example-icon">delete</mat-icon>
+    <a mat-button class="companyName" [routerLink]="['users']" routerLinkActive="active">
+      <span>Users</span>
+    </a>
+    <a mat-button class="companyName" [routerLink]="['feeds']" routerLinkActive="active">
+      <span>Feeds</span>
+    </a>
+    <a mat-button class="companyName" routerLink="/login">
+      <span>Logout</span>
+    </a>
   </mat-toolbar-row>
 </mat-toolbar>

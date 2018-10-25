@@ -22,8 +22,8 @@ export class ForgotPasswordComponent implements OnInit {
    }
 
   getErrorMessage(control) {
-    return this.forgotPasswordForm.controls[control].hasError('required') ? `${control} required` :
-    this.forgotPasswordForm.controls[control].hasError('pattern') ? `Please enter a valid ${control}` : '';
+    return this.forgotPasswordForm.controls[control].touched && this.forgotPasswordForm.controls[control].hasError('required') ? `${control} required` :
+    this.forgotPasswordForm.controls[control].touched && this.forgotPasswordForm.controls[control].hasError('pattern') ? `Please enter a valid ${control}` : '';
   }
 
   forgotPassword() {
@@ -31,9 +31,11 @@ export class ForgotPasswordComponent implements OnInit {
       this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe((res: any) => {
         if(res.error == 0) {
           this.router.navigate(['/login']);
+        } else {
+          this.errorMsg = res && res.message ? res.message : 'Error while forgot password';  
         }
       }, err => {
-        this.errorMsg = err && err.message ? err.message : 'Error while login';
+        this.errorMsg = err && err.message ? err.message : 'Error while forgot password';
       })
     }
   }
