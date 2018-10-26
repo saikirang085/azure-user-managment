@@ -11,25 +11,41 @@ import { AdminService } from 'src/app/shared/_services/admin.service';
 })
 export class UsersComponent implements OnInit {
   users: any[] = [];
+  selectedUser: any;
 
   constructor(
     public dialog: MatDialog,
     private adminService: AdminService
   ) { }
 
-  openDialog(type) {
+  openDialog(type, userId) {
     const dialogRef = this.dialog.open(AddUserComponent, {
       width: '400px',
-      data: {type}
+      data: {type, userId}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      if(result) {
+        this.getUsers();
+      }
       // this.animal = result;
     });
   }
 
-  confirmDialog(type) {
+  deleteUser() {
+    this.selectedUser.isDelete = true;
+    this.adminService.deleteUser(this.selectedUser).subscribe(res => {
+      if(res) {
+        this.getUsers();
+      }
+    }, err => {
+      console.log('error while deleting user::', err);
+    })
+  }
+
+  confirmDialog(type, user) {
+    this.selectedUser = user;
     const dialogRef = this.dialog.open(ConfirmComponent, {
       width: '400px',
       data: {type}
@@ -37,15 +53,16 @@ export class UsersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        this.getUsers();
+        this.deleteUser();
+        // this.getUsers();
       }
     });
   }
 
   getUsers() {
     this.adminService.getAllusers().subscribe((res: any) => {
-      if(res.data) {
-        this.users = res.data;
+      if(res) {
+        this.users = res;
       }
     }, err => {
       console.log('error while getting users list: ', err);

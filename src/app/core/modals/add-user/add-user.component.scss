@@ -40,11 +40,6 @@
         mat-icon {
             margin-right: 10px;
         }
-        mat-grid-list {
-            .mat-raised-button {
-                width: 100%;
-            }
-        }
         .mat-button {
             &.link {
                 font-size: 18px;
@@ -54,6 +49,10 @@
 }
 
 .mat-dialog-actions {
+    .mat-raised-button {
+        width: 100%;
+        margin-bottom: 15px;
+    }
     .mat-button {
         margin: 0 auto;
     }

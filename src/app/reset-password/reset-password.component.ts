@@ -14,7 +14,7 @@ export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   errorMsg: any;
   passwordMismatch: boolean;
-  resetToken: any;
+  token: any;
   
   constructor(
     private router: Router,
@@ -23,7 +23,7 @@ export class ResetPasswordComponent implements OnInit {
     private utilService: UtilService,
     private validationService: ValidationService
   ) { 
-    this.resetToken = this.route.snapshot.queryParams['token'] || '';
+    this.token = this.route.snapshot.queryParams['token'] || '';
   }
 
   getErrorMessage(control) {
@@ -33,8 +33,11 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPassword() {
     if(this.resetPasswordForm.valid) {
-      this.authService.resetPassword(this.utilService.encryptValue(this.resetPasswordForm.value, ['password', 'confirmPassword'])).subscribe((res: any) => {
-        if(res.error == 0) {
+      this.errorMsg = '';
+      let resetObj = this.utilService.deepCopy(this.resetPasswordForm.value);
+      let resetData = this.utilService.deepCopy(this.resetPasswordForm.value);
+      this.authService.resetPassword(resetData).subscribe((res: any) => {
+        if(res) {
           this.router.navigate(['/login']);
         } else {
           this.errorMsg = res && res.message ? res.message : 'Error while reset password';  
@@ -47,7 +50,7 @@ export class ResetPasswordComponent implements OnInit {
 
   initForm() {
     this.resetPasswordForm = new FormGroup({
-      resetToken: new FormControl(this.resetToken ? this.resetToken : ''),
+      token: new FormControl(this.token ? this.token : ''),
       password: new FormControl('', [Validators.required, Validators.pattern(this.validationService.password_regexPattern)]),
       confirmPassword: new FormControl('', [Validators.required, Validators.pattern(this.validationService.password_regexPattern)])
     })

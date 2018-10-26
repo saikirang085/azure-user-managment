@@ -2,6 +2,7 @@
   <mat-toolbar-row>
     <span class="brand-logo">
       <img src="assets/images/feed-logo.png">
+      <span class="logo-text">openFeeds</span>
     </span>
     <span class="example-spacer"></span>
     <a mat-button class="companyName" [routerLink]="['users']" routerLinkActive="active">
@@ -10,7 +11,7 @@
     <a mat-button class="companyName" [routerLink]="['feeds']" routerLinkActive="active">
       <span>Feeds</span>
     </a>
-    <a mat-button class="companyName" routerLink="/login">
+    <a mat-button class="companyName" (click)="logout()" >
       <span>Logout</span>
     </a>
   </mat-toolbar-row>

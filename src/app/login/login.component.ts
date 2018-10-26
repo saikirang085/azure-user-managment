@@ -32,13 +32,17 @@ export class LoginComponent implements OnInit {
 
   login() {
     if(this.loginForm.valid) {
-      this.loginForm.value.role = this.isAdmin ? 'admin' : 'user';
-      this.authService.login(this.utilService.encryptValue(this.loginForm.value, ['password'])).subscribe((res: any) => {
-        if(res.error == 0) {
+      this.errorMsg = '';
+      let loginObj = this.utilService.deepCopy(this.loginForm.value);
+      let loginData = this.utilService.deepCopy(this.loginForm.value);
+      loginData.role = this.isAdmin ? 'admin' : 'user';
+      this.authService.login(loginData).subscribe((res: any) => {
+        if(res.data) {
           if(this.isAdmin) {
-            this.router.navigate(['/admin/dashboard']);
+            this.router.navigate(['/admin/users']);
           } else {
-            this.router.navigate(['/user/user-dashboard']);
+            this.router.navigate(['/admin/users']);
+            // this.router.navigate(['/user/user-dashboard']);
           }
         } else {
           this.errorMsg = res && res.message ? res.message : 'Error while login';  
@@ -51,9 +55,12 @@ export class LoginComponent implements OnInit {
 
 
   initForm() {
+    if(this.authService.getProfile) {
+      this.router.navigate(['/admin/users']);
+    }
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern(this.validationService.email_regexPattern)]),
-      password: new FormControl('', [Validators.required, Validators.pattern(this.validationService.password_regexPattern)]),
+      password: new FormControl('', [Validators.required]),
     })
   }
 

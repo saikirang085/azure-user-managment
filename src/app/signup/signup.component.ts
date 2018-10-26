@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
     }
     this.fileName = this.imageFile.name;
     if (!this.errorUpload) {
-      this.utilService.uploadFile(formData).subscribe((res) => {
+      this.utilService.uploadFile(formData, this.fileName).subscribe((res) => {
         if (res.error == 0) {
           this[control].get('profilePicture').patchValue(res.responseObj);
           this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(image);

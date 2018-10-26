@@ -23,7 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const auth = this.inj.get(AuthService);
     const loader = this.inj.get(LoaderService);
     const urlRegex = /^(http|https|ftp|www)/;
-    const token = auth.getToken;
+    const token = auth.getProfile ? JSON.stringify(auth.getProfile) : '';
     loader.show();
     // if (request.url.indexOf('loginAsUser') > -1 && request.body.token) {
     //   request = request.clone({ headers: request.headers.set('x-Auth-Token', `${request.body.token}`) });

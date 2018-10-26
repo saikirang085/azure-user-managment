@@ -23,11 +23,9 @@ export class AppComponent implements OnInit {
     this.loggedInSubscription = this.authService.loggedIn$
     .pipe(takeUntil(this.destroySubscription$))
     .subscribe((state: any) => {
-      // if (state) {
-      //   this.router.navigate(['/user-dashboard']);
-      // } else {
-      //   this.router.navigate(['/login']);
-      // }
+      if (state) {
+        this.router.navigate(['/admin/users']);
+      }
     });
   }
 }

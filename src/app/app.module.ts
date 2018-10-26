@@ -21,17 +21,20 @@ import { ResetPasswordModule } from './reset-password/reset-password.module';
 import { AdminModule } from './admin/admin.module';
 import { AddUserComponent } from './core/modals/add-user/add-user.component';
 import { ConfirmComponent } from './core/modals/confirm/confirm.component';
+import { AddFeedComponent } from './core/modals/add-feed/add-feed.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoaderComponent,
     AddUserComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    AddFeedComponent
   ],
   entryComponents: [
     AddUserComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    AddFeedComponent
   ],
   imports: [
     BrowserModule,

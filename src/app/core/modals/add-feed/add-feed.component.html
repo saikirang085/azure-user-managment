@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.type == 'add' ? 'Add' : 'Modify'}} Feed</h1>
+<div mat-dialog-content>
+    <form [formGroup]="feedForm" novalidate>
+        <p>
+          <mat-form-field appearance="legacy">
+            <mat-label>feed*</mat-label>
+            <mat-icon matPrefix>rss_feed</mat-icon>
+            <textarea matInput placeholder="feed" formControlName="feed"></textarea>
+            <mat-error *ngIf="feedForm.get('feed').touched && feedForm.get('feed').invalid">{{getErrorMessage('feed')}}</mat-error>
+          </mat-form-field>
+          <mat-error *ngIf="errorMsg">{{errorMsg}}</mat-error>
+        </p>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="addFeed()" *ngIf="data.type == 'add'">Create Feed</button>
+    <button mat-raised-button color="accent" (click)="editFeed()" *ngIf="data.type != 'add'">Update Feed</button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+  </div>

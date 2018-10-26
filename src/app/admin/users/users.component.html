@@ -6,50 +6,31 @@
         <th>Email</th>
         <th>
             <button mat-icon-button color="primary">
-              <mat-icon (click)="openDialog('add')">add</mat-icon>
+              <mat-icon (click)="openDialog('add', null)">add</mat-icon>
             </button>
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="users && users.length">
       <tr *ngFor="let user of users">
-        <td>Jill</td>
-        <td>Smith</td>
-        <td>smith@gmail.com</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.email}}</td>
         <td>
-          <button mat-icon-button color="primary" (click)="openDialog('edit')">
+          <button mat-icon-button color="primary" (click)="openDialog('edit', user.id)">
             <mat-icon>border_color</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="confirmDialog('user')">
+          <button mat-icon-button color="warn" (click)="confirmDialog('user', user)">
             <mat-icon>delete_outline</mat-icon>
           </button>
         </td>
       </tr>
-      <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>eve@gmail.com</td>
-        <td>
-            <button mat-icon-button color="primary" (click)="openDialog('edit')">
-              <mat-icon>border_color</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="confirmDialog('user')">
-              <mat-icon>delete_outline</mat-icon>
-            </button>
-        </td>
-      </tr>
-      <tr>
-        <td>Adam</td>
-        <td>Johnson</td>
-        <td>adam@gmail.com</td>
-        <td>
-            <button mat-icon-button color="primary" (click)="openDialog('edit')">
-              <mat-icon>border_color</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="confirmDialog('user')">
-              <mat-icon>delete_outline</mat-icon>
-            </button>
-        </td>
-      </tr>
     </tbody>
+    <tfoot *ngIf="users && !users.length">
+      <tr>
+        <td colspan="4">
+          No Users Data found
+        </td>
+      </tr>
+    </tfoot>
   </table>

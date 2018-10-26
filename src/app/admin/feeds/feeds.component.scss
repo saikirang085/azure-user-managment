@@ -19,7 +19,17 @@ th {
 
 th, td {
     text-align: center;
+    width: 25%;
+    word-break: break-all;
     padding: 15px;
+}
+
+td:first-child {
+    width: 35% !important;
+}
+
+td:last-child {
+    width: 15% !important;
 }
 
 tr:nth-child(even){background-color: #f2f2f2}

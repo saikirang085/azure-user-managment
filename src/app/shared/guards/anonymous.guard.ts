@@ -19,12 +19,12 @@ export class AnonymousGuardService implements CanActivate {
     return this.authService.isLoggedIn
       .pipe(take(1))
       .pipe(map((isLoggedIn: any) => {
-        if (next.queryParams && next.queryParams['val']) {
+        if (next.queryParams && next.queryParams['token']) {
           this.authService.logout();
           return true;
         } else {
           if (isLoggedIn && isLoggedIn.loggedIn) {
-            this.router.navigate(['/landing-page']);
+            this.router.navigate(['/admin/users']);
             return false;
           }
         }

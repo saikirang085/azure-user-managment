@@ -25,10 +25,10 @@ export class AuthService {
     // in localStorage, log out.
     const user = localStorage.getItem('profile');
 
-    if (this.getToken) {
+    if (user) {
       this.userProfile = JSON.parse(user);
       this.setLoggedIn(true);
-    } else if (!this.getToken && user) {
+    } else if (!user) {
       this.setLoggedIn(false);
       this.logout();
     }
@@ -41,17 +41,32 @@ export class AuthService {
   }
 
   forgotPassword(data) {
-    return this.http.get(`forgot-password?email=${data.email}`)
+    return this.http.get(`forgotPassword?email=${data.email}`)
     .pipe(catchError(this.utilService.handleError)); 
   }
 
   resetPassword(data) {
-    return this.http.post(`reset-password`, data)
+    return this.http.post(`resetPassword`, data)
     .pipe(catchError(this.utilService.handleError)); 
   }
 
   signup(data) {
-    return this.http.post(`signup`, data)
+    return this.http.post(`addUser`, data)
+    .pipe(catchError(this.utilService.handleError)); 
+  }
+
+  editUser(data) {
+    return this.http.post(`editUser`, data)
+    .pipe(catchError(this.utilService.handleError)); 
+  }
+
+  getUserData(userId) {
+    return this.http.get(`fetchUser?id=${userId}`)
+    .pipe(catchError(this.utilService.handleError)); 
+  }
+
+  SavePersonImage(data) {
+    return this.http.post(`SavePersonImage`, data)
     .pipe(catchError(this.utilService.handleError)); 
   }
 
@@ -87,10 +102,10 @@ export class AuthService {
     // }
   }
 
-  get getToken(): string {
+  get getProfile(): any {
     // Check if current time is past access token's expiration
-    const token = localStorage.getItem('access_token');
-    return token ? token : null;
+    const profile = localStorage.getItem('profile');
+    return profile ? JSON.parse(profile) : null;
   }
 
 }

@@ -7,11 +7,11 @@ import { FeedsComponent } from './feeds/feeds.component';
 
 const routes: Routes = [
   {
-      path: 'admin', component: DashboardComponent,
+      path: 'admin', component: DashboardComponent, canActivate: [AuthGuard],
       children: [
         { path: '', pathMatch: 'full', redirectTo: 'users' },
-        { path: 'users', pathMatch: 'full', component: UsersComponent },
-        { path: 'feeds', pathMatch: 'full', component: FeedsComponent },
+        { path: 'users', pathMatch: 'full', component: UsersComponent, canActivate: [AuthGuard] },
+        { path: 'feeds', pathMatch: 'full', component: FeedsComponent, canActivate: [AuthGuard] },
       ]
   }
 ];

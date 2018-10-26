@@ -21,6 +21,8 @@ export class AddUserComponent implements OnInit {
   imageUrl: SafeResourceUrl;
   imageFile: any;
   passwordMismatch: boolean;
+  profileData: any;
+  imageObj: string | ArrayBuffer;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -41,15 +43,36 @@ export class AddUserComponent implements OnInit {
   }
 
   signup() {
+    this.errorMsg = '';
     if(this.signUpForm.valid && !this.errorUpload) {
-      this.authService.signup(this.utilService.encryptValue(this.signUpForm.value, ['password', 'confirmPassword'])).subscribe((res: any) => {
-        if(res.error == 0) {
-          this.router.navigate(['/user/dashboard']);
+      this.authService.signup(this.signUpForm.value).subscribe((res: any) => {
+        if(res) {
+          this.dialogRef.close(true);
         } else {
-          this.errorMsg = res && res.message ? res.message : 'Error while signup';  
+          this.errorMsg = res && res.message ? res.message : 'Error while adding User';  
         }
       }, err => {
-        this.errorMsg = err && err.message ? err.message : 'Error while signup';
+        this.errorMsg = err && err.message ? err.message : 'Error while adding User';
+      })
+    }
+  }
+
+  editUser() {
+    this.errorMsg = '';
+    let userData = this.profileData;
+    userData.firstName = this.signUpForm.value.firstName ? this.signUpForm.value.firstName : userData.firstName;
+    userData.lastName = this.signUpForm.value.lastName ? this.signUpForm.value.lastName : userData.lastName;
+    userData.email = this.signUpForm.value.email ? this.signUpForm.value.email : userData.email;
+    userData.image = this.signUpForm.value.image ? this.signUpForm.value.image : userData.image;
+    if(this.signUpForm.valid && !this.errorUpload) {
+      this.authService.editUser(userData).subscribe((res: any) => {
+        if(res) {
+          this.dialogRef.close(true);
+        } else {
+          this.errorMsg = res && res.message ? res.message : 'Error while updating User';  
+        }
+      }, err => {
+        this.errorMsg = err && err.message ? err.message : 'Error while updating User';
       })
     }
   }
@@ -76,22 +99,34 @@ export class AddUserComponent implements OnInit {
       formData.append('image', file, null);
     }
     this.fileName = this.imageFile.name;
+
     if (!this.errorUpload) {
-      this.utilService.uploadFile(formData).subscribe((res) => {
-        if (res.error == 0) {
-          this[control].get('profilePicture').patchValue(res.responseObj);
-          this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(image);
-          this.fileName = this.imageFile.name;
-          this.resetFileInput('uploadLogoFile');
+      var myReader:FileReader = new FileReader();
+      myReader.onloadend = (e) => {
+        this.imageObj = myReader.result;
+        console.log('this.imageObj:::', this.imageObj);
+        let imageFile = {
+          imagedata: this.imageObj,
+          name: this.fileName
         }
-      }, error => {
-        // this.errorMsg = error && error.message ? error.message : 'Error';
-        this.resetFileInput('uploadLogoFile');
-        setTimeout(() => {
-          // this.errorMsg = '';
-          this.fileName = '';
-        }, 2000);
-      })
+        this.authService.SavePersonImage(imageFile).subscribe((res: any) => {
+          if (res) {
+            this.signUpForm.get('image').setValue(res.message);
+            this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(image);
+            this.fileName = this.imageFile.name;
+            this.resetFileInput('uploadLogoFile');
+          }
+        }, error => {
+          // this.errorMsg = error && error.message ? error.message : 'Error';
+          this.resetFileInput('uploadLogoFile');
+          setTimeout(() => {
+            // this.errorMsg = '';
+            this.fileName = '';
+          }, 2000);
+        })
+      }
+      myReader.readAsDataURL(this.imageFile);
+
     }
 
   }
@@ -100,17 +135,33 @@ export class AddUserComponent implements OnInit {
     this[element].nativeElement.value = "";
   }
 
+  getUserData() {
+    this.authService.getUserData(this.data.userId).subscribe((res: any) => {
+      if(res) {
+        this.profileData = res;
+        this.imageUrl = this.profileData.image;
+        this.initForm(this.profileData);
+      }
+    }, err => {
+      console.log('error while getting user:::', err);
+    })
+  }
+
   initForm(data?) {
     this.signUpForm = new FormGroup({
+      id: new FormControl(data ? data.id : ''),
       firstName: new FormControl(data ? data.firstName : '', [Validators.required]),
       lastName: new FormControl(data ? data.lastName : '', [Validators.required]),
-      role: new FormControl(data ? data.role : '', [Validators.required]),
+      image: new FormControl(data ? data.image : '', [Validators.required]),
       email: new FormControl({value: data ? data.email : '', disabled: data && data.email ? true : false}, [Validators.required, Validators.pattern(this.validationService.email_regexPattern)]),
     });
   }
 
   ngOnInit() {
     this.initForm();
+    if(this.data.type != 'add') {
+      this.getUserData();
+    }
   }
 
 }

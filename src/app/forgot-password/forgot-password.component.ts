@@ -12,6 +12,7 @@ import { AuthService } from '../auth/auth.service';
 export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   errorMsg: any;
+  successMsg: any;
 
   constructor(
     private router: Router,
@@ -28,14 +29,14 @@ export class ForgotPasswordComponent implements OnInit {
 
   forgotPassword() {
     if(this.forgotPasswordForm.valid) {
+      this.successMsg = '';
+      this.errorMsg = '';
       this.authService.forgotPassword(this.forgotPasswordForm.value).subscribe((res: any) => {
-        if(res.error == 0) {
-          this.router.navigate(['/login']);
-        } else {
-          this.errorMsg = res && res.message ? res.message : 'Error while forgot password';  
+        if(res) {
+          this.successMsg = res && res.message ? res.message : 'Resent Password link sent to your mail';  
         }
       }, err => {
-        this.errorMsg = err && err.message ? err.message : 'Error while forgot password';
+        this.errorMsg = err && err.message ? err.message : 'Error while sending reset password link';
       })
     }
   }

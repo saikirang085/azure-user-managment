@@ -12,7 +12,18 @@ export class UtilService {
   environment = environment;
   constructor() { }
 
-  uploadFile(formData): any {
+  deepCopy(oldObj: any) {
+    var newObj = oldObj;
+    if (oldObj && typeof oldObj === "object") {
+      newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
+      for (var i in oldObj) {
+        newObj[i] = this.deepCopy(oldObj[i]);
+      }
+    }
+    return newObj;
+  }
+  
+  uploadFile(formData, fileName): any {
     // this.loaderService.show();
     // let url = `file/uploadFile`;
     return Observable.create((observer) => {
@@ -30,7 +41,7 @@ export class UtilService {
           xhr.abort();
         };
       }
-      xhr.open("POST", `${environment.BASE_API}/uploadFile`, true)
+      xhr.open("POST", `${environment.BASE_API}/SavePersonImage/${fileName}`, true)
       xhr.send(formData)
     });
   }

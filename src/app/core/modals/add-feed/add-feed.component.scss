@@ -1,0 +1,62 @@
+.mat-dialog-content {
+    margin: 0 auto;
+    min-width: 300px;
+    max-width: 400px;
+    min-height: 100px;
+    padding: 25px;
+    .logo {
+        margin-bottom: 25px;
+        img {
+            height: 85px;
+        }
+    }
+    .profile-pic {
+        height: 125px;
+        width: 125px;
+        margin: 0 auto;
+        position: relative;
+        img {
+            height: 125px;
+            width: 125px;
+            border-radius: 50%;
+        }
+       .mat-mini-fab {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        margin: 0 auto;
+        right: 0px;
+        mat-icon {
+            margin: 0 auto;
+        }
+       } 
+    }
+    mat-form-field {
+        width: 100%;
+        [matInput] {
+            padding-bottom: 5px;
+        }
+        textarea {
+            height: 75px;
+        }
+    }
+    mat-icon {
+        margin-right: 10px;
+    }
+    .mat-button {
+        &.link {
+            font-size: 18px;
+            color: #3f51b5;
+        }
+    }
+}
+
+.mat-dialog-actions {
+.mat-raised-button {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.mat-button {
+    margin: 0 auto;
+}
+}
