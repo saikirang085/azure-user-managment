@@ -22,4 +22,14 @@ th, td {
     padding: 15px;
 }
 
+td {
+    &.image {
+        img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+        }
+    }
+}
+
 tr:nth-child(even){background-color: #f2f2f2}

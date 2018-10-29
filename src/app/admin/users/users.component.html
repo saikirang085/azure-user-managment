@@ -1,6 +1,7 @@
 <table class="mat-elevation-z8">
     <thead>
       <tr>
+        <th>Profile Pic</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
@@ -13,6 +14,9 @@
     </thead>
     <tbody *ngIf="users && users.length">
       <tr *ngFor="let user of users">
+        <td class="image">
+          <img [src]="user.image ? user.image : '/assets/images/default-user1.png'">
+        </td>
         <td>{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.email}}</td>

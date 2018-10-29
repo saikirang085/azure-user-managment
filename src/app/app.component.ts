@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     .pipe(takeUntil(this.destroySubscription$))
     .subscribe((state: any) => {
       if (state) {
-        this.router.navigate(['/admin/users']);
+        // this.router.navigate(['/admin/users']);
       }
     });
   }
